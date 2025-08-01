@@ -1,10 +1,9 @@
-import os
-import csv
+import os, csv
 import openpyxl
-from openpyxl.utils import get_column_letter
+from typing import List
+
 
 def main():
-
     base_dir = os.getcwd()
     base_folder_name = os.path.basename(base_dir)
 
@@ -12,10 +11,10 @@ def main():
     ws = wb.active
     ws.title = "Data"
 
-    csv_files = []
+    csv_files = list()
 
     for item in os.listdir(base_dir):
-        item_path = os.path.join(base_dir,item)
+        item_path = os.path.join(base_dir, item)
         if os.path.isfile(item_path) and item.lower().endswith(".csv"):
             csv_files.append((base_folder_name, item))
 
@@ -30,8 +29,9 @@ def main():
             except PermissionError:
                 continue
 
-    for  col_idx, (folder_name, filename) in enumerate(csv_files, 1):
-        file_path = os.path.join(base_dir, folder_name, filename) if folder_name != base_folder_name else os.path.join(base_dir,filename)
+    for col_idx, (folder_name, filename) in enumerate(csv_files, 1):
+        file_path = os.path.join(base_dir, folder_name, filename) if folder_name != base_folder_name else os.path.join(
+            base_dir, filename)
 
         ws.cell(row=1, column=col_idx, value=folder_name)
 
@@ -88,7 +88,6 @@ def main():
     wb.save(output_path)
     print(f"Файл успешно создан: {output_path}")
 
+
 if __name__ == "__main__":
     main()
-
-
